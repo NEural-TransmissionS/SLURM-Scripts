@@ -1,6 +1,6 @@
 # Setup Conda environment on SLURM cluster
 
-By default FIT AI.Panther SLURM nodes doesn't have anaconda installed, and the default system python is laced with old (check AI.Panther/pipdeptree.txt). To setup a conda environment on the SLURM cluster, follow the steps below:
+By default FIT AI.Panther SLURM nodes doesn't have anaconda installed, and the default system python is laced with old packages (check `AI.Panther/pipdeptree.txt`). To setup a conda environment on the SLURM cluster, follow the steps below:
 
 1. Download and install the latest `miniforge3` distribution using [this guide](https://github.com/conda-forge/miniforge?tab=readme-ov-file#unix-like-platforms-mac-os--linux). Followed is the copy of the commands used:
 
@@ -9,7 +9,7 @@ curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Mi
 bash Miniforge3-$(uname)-$(uname -m).sh
 ```
 
-2. Use `cat ~/.bashrc` content, if the follow block doesn't exists then add the conda path to your `.bashrc` file:
+2. Use `cat ~/.bashrc` to check the content, if the follow block doesn't exists then add it to your `.bashrc` file:
 
 ```bash
 # >>> conda initialize >>>
@@ -28,7 +28,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 ```
 
-3. Run the following command to activate the conda environment:
+3. Run the following command to activate the conda environment (in login node):
 
 ```bash
 source ~/.bashrc
@@ -58,3 +58,11 @@ srun --partition=gpu1 --ntasks-per-node=1 --time=01:00:00 --pty bash -i
 ```
 
 Proceed to run the `mamba create` and `mamba install` command on the SLURM node.
+
+## Create a new conda environment from an existing environment file
+
+If you have an existing environment file, you can create a new conda environment from it. For example, if you have an environment file `environment.yml`, run the following command (replace `--partition=short` with `gpu1` if installation requires a GPU):
+
+```bash
+srun --partition=short mamba env create -y --file environment.yml
+```
