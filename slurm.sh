@@ -32,7 +32,7 @@ echo `date`
 start=`date +%s`
 
 # Run the training script
-python multirun_slurm.py
+python train.py
 
 end=`date +%s`
 

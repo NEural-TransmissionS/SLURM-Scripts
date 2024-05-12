@@ -1,10 +1,14 @@
 # Running SLURM script on AI.Panther
 
+## Using single GPU for a single training job
+
 As simple as:
 
 ```bash
 sbatch <script_name>.sh
 ```
+
+A sample of the SLURM script (`slurm.sh`) is provided in this repository. The script is a simple example of a SLURM script that runs a Python script (`python train.py`). Modify the script to fit your needs (training arguments, different python script file etc.).
 
 All `#SBATCH` directives defined at the beginning of the SLURM script can be overridden by passing the flag to the `sbatch` command. For example, to override the `--job-name` directive in the script (default to `NETS_Script`), run:
 
@@ -12,7 +16,7 @@ All `#SBATCH` directives defined at the beginning of the SLURM script can be ove
 sbatch --job-name=<desired_job_name> <script_name>.sh
 ```
 
-# Using multiple GPUs for multiple training jobs
+## Using multiple GPUs for multiple training jobs
 
 So AI.Panther `slurm.conf` and `gres.conf` is totally busted. If you schedule `gpus-per-node=1` for multiple jobs, it will only runs job on the first GPU. To run multiple jobs on multiple GPUs, you need to schedule `gpus-per-node=4` and then use `CUDA_VISIBLE_DEVICES` to specify which GPU to use.
 
@@ -22,7 +26,7 @@ Provided in this repository is a `queuerun.py` script that runs multiple trainin
 sbatch slurm_all_gpu.sh
 ```
 
-# Using all 4 GPUs for PyTorch Distributed Data Parallel
+## Using all 4 GPUs for PyTorch Distributed Data Parallel
 
 Make sure the training script is using PyTorch's Distributed Data Parallel (DDP) module. Then, add these lines replacing `python queuerun.py` in the `slurm_all_gpu.sh` SLURM script:
 
